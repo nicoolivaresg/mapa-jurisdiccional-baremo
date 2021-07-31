@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="container-fluid">
+    <div class="container">
       <div class="row search-row" style="justify-content: center">
         <h1 class="item" style="text-align: center;">{{title}}</h1>
       </div>
@@ -57,11 +57,9 @@
       <hr style="width:100%;text-align:left;margin-left:5px">
       <div class="row search-row">
         <h2 class="item">Visualización</h2>
-        <div id="canvas" class="item">
-          <svg id="svg" />
-        </div>
       </div>
     </div>
+      <div id="canvas" ></div>
   </div>
 </template>
 
@@ -80,13 +78,13 @@ export default {
   },
   data(){
     return{
-      title: 'Baremo Daño Moral: Accidentes Laborales (Stare.js)',
+      title: 'Baremo Daño Moral: Accidentes Laborales y Enfermedades Profesionales (Stare.js)',
       subtitle: 'Esta herramienta demostrativa permite buscar en Baremo Daño Moral: Accidentes del Trabajo y Enfermedades Profesionales. Podrá ver los resultados a través de visualizaciones implementadas con Stare.js, una herramienta desarrollada en la Universidad de Santiago de Chile para la construcción de visualizaciones visuales de resultados de búsqueda.',
       loadingResults: false,
       loadingVisualization: false,
-      engine: 'baremo',
+      engine: '',
       query:null,
-      pageNumber: 30,
+      pageNumber: 50,
       resultsVisualization: '',
       results: '', 
       resultsCount: 0,
@@ -117,7 +115,7 @@ export default {
     getResults(engine, query, pageNumber){
       this.loadingResults = true;
       return new Promise((resolve, reject) => {
-        axios.get(`${STARE_API_URL}/${engine}?query=${query}&numberOfResults=${pageNumber}`)
+        axios.get(`${STARE_API_URL}?query=${query}&numberOfResults=${pageNumber}`)
           .then(response => resolve(_.get(response, 'data')))
           .catch(error => reject(error));
       })
@@ -171,14 +169,16 @@ export default {
         document.querySelector('#canvas').innerHTML = '';
         
         if (this.visualization === 'bodyInjuriesMap') {
-          chart('#canvas', this.currentData, {});
+          chart('#canvas', this.currentData, {mainBackgroundColor: 'white'});
         } 
         if(this.visualization === 'map')
         {
-          let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-          svg.setAttribute('id', 'svg');
-          this.canvas.appendChild(svg);
-          chart('#svg', this.currentData, {});
+          chart('#canvas', this.currentData, {});
+          // chart('#canvas', this.currentData, {stroke: true, strokeColor: 'black'});
+          // let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          // svg.setAttribute('id', 'svg');
+          // this.canvas.appendChild(svg);
+          // chart('#svg', this.currentData, {});
         }
       }else{
         alert("No se puede dibujar la visualización en este momento. Intente más tarde.");

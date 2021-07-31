@@ -10,7 +10,7 @@
     "deployBodyMap": "scp -i ~/sandbox/aws/memoria.pem -r dist/* ubuntu@18.229.94.184:~/apps/client/baremo/bodyMap"
   },
   "dependencies": {
-    "@nicolas.olivares.g/stare.js-client": "^1.0.2",
+    "@nicolas.olivares.g/stare.js-client": "^1.0.5-no",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "core-js": "^3.10.1",
